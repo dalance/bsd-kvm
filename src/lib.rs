@@ -1,7 +1,7 @@
-use bsd_kvm_sys::{
-    kinfo_proc, kvm_t, priority, rusage, sigset_t, timeval, COMMLEN, KI_EMULNAMELEN, KI_NGROUPS,
-    LOCKNAMELEN, LOGINCLASSLEN, LOGNAMELEN, MAXCOMLEN, O_RDONLY, O_RDWR, O_WRONLY, TDNAMLEN,
-    WMESGLEN, _POSIX2_LINE_MAX, _SIG_WORDS,
+use bsd_kvm_sys::{kinfo_proc, kvm_t, priority, rusage, sigset_t, timeval, _SIG_WORDS};
+use libc::{
+    COMMLEN, KI_EMULNAMELEN, KI_NGROUPS, LOCKNAMELEN, LOGINCLASSLEN, LOGNAMELEN, MAXCOMLEN,
+    O_RDONLY, O_RDWR, O_WRONLY, TDNAMLEN, WMESGLEN, _POSIX2_LINE_MAX,
 };
 use std::ffi::{CStr, CString};
 use std::path::Path;
@@ -124,15 +124,15 @@ impl Drop for Kvm {
 
 #[derive(Clone, Copy, Debug)]
 pub enum KernProc {
-    All = bsd_kvm_sys::KERN_PROC_ALL as isize,
-    Proc = bsd_kvm_sys::KERN_PROC_PROC as isize,
-    Pid = bsd_kvm_sys::KERN_PROC_PID as isize,
-    Pgrp = bsd_kvm_sys::KERN_PROC_PGRP as isize,
-    Session = bsd_kvm_sys::KERN_PROC_SESSION as isize,
-    Tty = bsd_kvm_sys::KERN_PROC_TTY as isize,
-    Uid = bsd_kvm_sys::KERN_PROC_UID as isize,
-    Ruid = bsd_kvm_sys::KERN_PROC_RUID as isize,
-    IncThread = bsd_kvm_sys::KERN_PROC_INC_THREAD as isize,
+    All = libc::KERN_PROC_ALL as isize,
+    Proc = libc::KERN_PROC_PROC as isize,
+    Pid = libc::KERN_PROC_PID as isize,
+    Pgrp = libc::KERN_PROC_PGRP as isize,
+    Session = libc::KERN_PROC_SESSION as isize,
+    Tty = libc::KERN_PROC_TTY as isize,
+    Uid = libc::KERN_PROC_UID as isize,
+    Ruid = libc::KERN_PROC_RUID as isize,
+    IncThread = libc::KERN_PROC_INC_THREAD as isize,
 }
 
 #[derive(Clone, Debug)]
