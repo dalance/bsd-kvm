@@ -397,7 +397,7 @@ impl From<&kinfo_proc> for KinfoProc {
 }
 
 #[derive(Clone, Debug)]
-pub struct Sigset([u32; _SIG_WORDS as usize]);
+pub struct Sigset(pub [u32; _SIG_WORDS as usize]);
 
 impl From<sigset_t> for Sigset {
     fn from(x: sigset_t) -> Self {
