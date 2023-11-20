@@ -4,6 +4,7 @@ use libc::{
     O_RDONLY, O_RDWR, O_WRONLY, TDNAMLEN, WMESGLEN, _POSIX2_LINE_MAX,
 };
 use std::ffi::{CStr, CString};
+use std::os::raw::c_char;
 use std::path::Path;
 use thiserror::Error;
 
@@ -33,7 +34,7 @@ impl Kvm {
         let execfile =
             execfile.map(|x| CString::new(x.as_ref().to_string_lossy().into_owned()).unwrap());
         let execfile_ptr = if let Some(ref x) = execfile {
-            x.as_ptr() as *const i8
+            x.as_ptr() as *const c_char
         } else {
             std::ptr::null()
         };
@@ -41,7 +42,7 @@ impl Kvm {
         let corefile =
             corefile.map(|x| CString::new(x.as_ref().to_string_lossy().into_owned()).unwrap());
         let corefile_ptr = if let Some(ref x) = corefile {
-            x.as_ptr() as *const i8
+            x.as_ptr() as *const c_char
         } else {
             std::ptr::null()
         };
@@ -149,21 +150,21 @@ pub struct KinfoProc {
     /// reserved: layout identifier
     pub layout: i32,
     /// address of command arguments
-    pub args: *const i8,
+    pub args: *const c_char,
     /// address of proc
-    pub paddr: *const i8,
+    pub paddr: *const c_char,
     /// kernel virtual addr of u-area
-    pub addr: *const i8,
+    pub addr: *const c_char,
     /// pointer to trace file
-    pub tracep: *const i8,
+    pub tracep: *const c_char,
     /// pointer to executable file
-    pub textvp: *const i8,
+    pub textvp: *const c_char,
     /// pointer to open file info
-    pub fd: *const i8,
+    pub fd: *const c_char,
     /// pointer to kernel vmspace struct
-    pub vmspace: *const i8,
+    pub vmspace: *const c_char,
     /// sleep address
-    pub wchan: *const i8,
+    pub wchan: *const c_char,
     /// Process identifier
     pub pid: i32,
     /// parent process id
@@ -241,33 +242,33 @@ pub struct KinfoProc {
     /// Kernel trace points
     pub traceflag: i32,
     /// S* process status
-    pub stat: i8,
+    pub stat: c_char,
     /// Process "nice" value
-    pub nice: i8,
+    pub nice: c_char,
     /// Process lock (prevent swap) count
-    pub lock: i8,
+    pub lock: c_char,
     /// Run queue index
-    pub rqindex: i8,
+    pub rqindex: c_char,
     /// Which cpu we are on (legacy)
     pub oncpu_old: u8,
     /// Last cpu we were on (legacy)
     pub lastcpu_old: u8,
     /// thread name
-    pub tdname: [i8; TDNAMLEN as usize + 1],
+    pub tdname: [c_char; TDNAMLEN as usize + 1],
     /// wchan message
-    pub wmesg: [i8; WMESGLEN as usize + 1],
+    pub wmesg: [c_char; WMESGLEN as usize + 1],
     /// setlogin name
-    pub login: [i8; LOGNAMELEN as usize + 1],
+    pub login: [c_char; LOGNAMELEN as usize + 1],
     /// lock name
-    pub lockname: [i8; LOCKNAMELEN as usize + 1],
+    pub lockname: [c_char; LOCKNAMELEN as usize + 1],
     /// command name
-    pub comm: [i8; COMMLEN as usize + 1],
+    pub comm: [c_char; COMMLEN as usize + 1],
     /// emulation name
-    pub emul: [i8; KI_EMULNAMELEN as usize + 1],
+    pub emul: [c_char; KI_EMULNAMELEN as usize + 1],
     /// login class
-    pub loginclass: [i8; LOGINCLASSLEN as usize + 1],
+    pub loginclass: [c_char; LOGINCLASSLEN as usize + 1],
     /// more thread name
-    pub moretdname: [i8; MAXCOMLEN as usize - TDNAMLEN as usize + 1],
+    pub moretdname: [c_char; MAXCOMLEN as usize - TDNAMLEN as usize + 1],
     /// controlling tty dev
     pub tdev: u64,
     /// Which cpu we are on
@@ -295,13 +296,13 @@ pub struct KinfoProc {
     /// rusage of children processes
     pub rusage_ch: Rusage,
     /// kernel virtual addr of pcb
-    pub pcb: *const i8,
+    pub pcb: *const c_char,
     /// kernel virtual addr of stack
-    pub kstack: *const i8,
+    pub kstack: *const c_char,
     /// User convenience pointer
-    pub udata: *const i8,
+    pub udata: *const c_char,
     /// address of thread
-    pub tdaddr: *const i8,
+    pub tdaddr: *const c_char,
     /// PS_* flags
     pub sflag: i64,
     /// XXXKSE kthread flag
@@ -313,14 +314,14 @@ impl From<&kinfo_proc> for KinfoProc {
         Self {
             structsize: x.ki_structsize,
             layout: x.ki_layout,
-            args: x.ki_args as *const i8,
-            paddr: x.ki_paddr as *const i8,
-            addr: x.ki_addr as *const i8,
-            tracep: x.ki_tracep as *const i8,
-            textvp: x.ki_textvp as *const i8,
-            fd: x.ki_fd as *const i8,
-            vmspace: x.ki_vmspace as *const i8,
-            wchan: x.ki_wchan as *const i8,
+            args: x.ki_args as *const c_char,
+            paddr: x.ki_paddr as *const c_char,
+            addr: x.ki_addr as *const c_char,
+            tracep: x.ki_tracep as *const c_char,
+            textvp: x.ki_textvp as *const c_char,
+            fd: x.ki_fd as *const c_char,
+            vmspace: x.ki_vmspace as *const c_char,
+            wchan: x.ki_wchan as *const c_char,
             pid: x.ki_pid,
             ppid: x.ki_ppid,
             pgid: x.ki_pgid,
@@ -386,10 +387,10 @@ impl From<&kinfo_proc> for KinfoProc {
             pri: x.ki_pri.into(),
             rusage: x.ki_rusage.into(),
             rusage_ch: x.ki_rusage_ch.into(),
-            pcb: x.ki_pcb as *const i8,
-            kstack: x.ki_kstack as *const i8,
-            udata: x.ki_udata as *const i8,
-            tdaddr: x.ki_tdaddr as *const i8,
+            pcb: x.ki_pcb as *const c_char,
+            kstack: x.ki_kstack as *const c_char,
+            udata: x.ki_udata as *const c_char,
+            tdaddr: x.ki_tdaddr as *const c_char,
             sflag: x.ki_sflag,
             tdflags: x.ki_tdflags,
         }
