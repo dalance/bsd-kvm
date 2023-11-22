@@ -47,7 +47,7 @@ impl Kvm {
             std::ptr::null()
         };
 
-        let mut errbuf = [0i8; _POSIX2_LINE_MAX as usize];
+        let mut errbuf = [0 as c_char; _POSIX2_LINE_MAX as usize];
         let kvm = unsafe {
             bsd_kvm_sys::kvm_openfiles(
                 execfile_ptr,
@@ -244,7 +244,7 @@ pub struct KinfoProc {
     /// S* process status
     pub stat: c_char,
     /// Process "nice" value
-    pub nice: c_char,
+    pub nice: i8,
     /// Process lock (prevent swap) count
     pub lock: c_char,
     /// Run queue index
