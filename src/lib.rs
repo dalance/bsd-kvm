@@ -391,7 +391,7 @@ impl From<&kinfo_proc> for KinfoProc {
             kstack: x.ki_kstack as *const c_char,
             udata: x.ki_udata as *const c_char,
             tdaddr: x.ki_tdaddr as *const c_char,
-            sflag: x.ki_sflagas as i64,
+            sflag: x.ki_sflag as i64,
             tdflags: x.ki_tdflags as i64,
         }
     }
