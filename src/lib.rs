@@ -341,12 +341,12 @@ impl From<&kinfo_proc> for KinfoProc {
             svgid: x.ki_svgid,
             ngroups: x.ki_ngroups,
             groups: x.ki_groups,
-            size: x.ki_size,
-            rssize: x.ki_rssize,
-            swrss: x.ki_swrss,
-            tsize: x.ki_tsize,
-            dsize: x.ki_dsize,
-            ssize: x.ki_ssize,
+            size: x.ki_size as u64,
+            rssize: x.ki_rssize as i64,
+            swrss: x.ki_swrss as i64,
+            tsize: x.ki_tsize as i64,
+            dsize: x.ki_dsize as i64,
+            ssize: x.ki_ssize as i64,
             xstat: x.ki_xstat,
             acflag: x.ki_acflag,
             pctcpu: x.ki_pctcpu,
@@ -357,8 +357,8 @@ impl From<&kinfo_proc> for KinfoProc {
             runtime: x.ki_runtime,
             start: x.ki_start.into(),
             childtime: x.ki_childtime.into(),
-            flag: x.ki_flag,
-            kiflag: x.ki_kiflag,
+            flag: x.ki_flag as i64,
+            kiflag: x.ki_kiflag as i64,
             traceflag: x.ki_traceflag,
             stat: x.ki_stat,
             nice: x.ki_nice,
@@ -391,8 +391,8 @@ impl From<&kinfo_proc> for KinfoProc {
             kstack: x.ki_kstack as *const c_char,
             udata: x.ki_udata as *const c_char,
             tdaddr: x.ki_tdaddr as *const c_char,
-            sflag: x.ki_sflag,
-            tdflags: x.ki_tdflags,
+            sflag: x.ki_sflagas as i64,
+            tdflags: x.ki_tdflags as i64,
         }
     }
 }
@@ -424,7 +424,7 @@ impl From<timeval> for Timeval {
     fn from(x: timeval) -> Self {
         Timeval {
             sec: x.tv_sec,
-            usec: x.tv_usec,
+            usec: x.tv_usec as i64,
         }
     }
 }
@@ -493,20 +493,20 @@ impl From<rusage> for Rusage {
         Rusage {
             utime: x.ru_utime.into(),
             stime: x.ru_stime.into(),
-            maxrss: x.ru_maxrss,
-            ixrss: x.ru_ixrss,
-            idrss: x.ru_idrss,
-            isrss: x.ru_isrss,
-            minflt: x.ru_minflt,
-            majflt: x.ru_majflt,
-            nswap: x.ru_nswap,
-            inblock: x.ru_inblock,
-            oublock: x.ru_oublock,
-            msgsnd: x.ru_msgsnd,
-            msgrcv: x.ru_msgrcv,
-            nsignals: x.ru_nsignals,
-            nvcsw: x.ru_nvcsw,
-            nivcsw: x.ru_nivcsw,
+            maxrss: x.ru_maxrss as i64,
+            ixrss: x.ru_ixrss as i64,
+            idrss: x.ru_idrss as i64,
+            isrss: x.ru_isrss as i64,
+            minflt: x.ru_minflt as i64,
+            majflt: x.ru_majflt as i64,
+            nswap: x.ru_nswap as i64,
+            inblock: x.ru_inblock as i64,
+            oublock: x.ru_oublock as i64,
+            msgsnd: x.ru_msgsnd as i64,
+            msgrcv: x.ru_msgrcv as i64,
+            nsignals: x.ru_nsignals as i64,
+            nvcsw: x.ru_nvcsw as i64,
+            nivcsw: x.ru_nivcsw as i64,
         }
     }
 }
