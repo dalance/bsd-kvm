@@ -423,7 +423,7 @@ impl Timeval {
 impl From<timeval> for Timeval {
     fn from(x: timeval) -> Self {
         Timeval {
-            sec: x.tv_sec,
+            sec: x.tv_sec as i64,
             usec: x.tv_usec as i64,
         }
     }
